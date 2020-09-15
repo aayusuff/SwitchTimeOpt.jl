@@ -2,7 +2,7 @@
 function simulate(m::linSTO)
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0, stop = m.STOev.tf, length= 10000))
 
   # Perform Simulation
   x, xpts, J = simulatelinsto(m.tau, m.STOev.x0, m.STOev.Q, m.STOev.E, m.STOev.A, t)
@@ -14,7 +14,7 @@ end
 function simulate(m::linSTO, tau::Array{Float64,1})
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0, stop = m.STOev.tf, length= 10000))
 
   # Perform Simulation
   x, xpts, J = simulatelinsto(tau, m.STOev.x0, m.STOev.Q, m.STOev.E, m.STOev.A, t)
@@ -42,7 +42,7 @@ end
 function simulate(m::nlinSTO)
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0,stop= m.STOev.tf,length= 10000))
 
   # Get original Q, x0
   Q = m.STOev.Q[1:end-1, 1:end-1]
@@ -61,7 +61,7 @@ end
 function simulate(m::nlinSTO, tau::Array{Float64, 1})
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0,stop = m.STOev.tf, length= 10000))
 
   # Get original, Q, x0
   Q = m.STOev.Q[1:end-1, 1:end-1]
@@ -96,7 +96,7 @@ end
 function simulatelinearized(m::nlinSTO)
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0,stop= m.STOev.tf, length = 10000))
 
   # Get original Q, x0
   Q = m.STOev.Q[1:end-1, 1:end-1]
@@ -115,7 +115,7 @@ end
 function simulatelinearized(m::nlinSTO, tau::Array{Float64,1})
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0, stop = m.STOev.tf, length = 10000))
 
   # Get original Q, x0
   Q = m.STOev.Q[1:end-1, 1:end-1]
@@ -159,14 +159,14 @@ function simulatelinsto(tau::Array{Float64,1}, x0::Array{Float64, 1}, Q::Array{F
   tau = [t[1]; tau; t[end]]  # Extend tau vector to simplify numbering
 
   # Compute Initial States
-  xpts = Array{Float64}(nx, N+1)
+  xpts = Array{Float64}(undef,nx, N+1)
   xpts[:,1] = x0
   for i = 2:N+1
     xpts[:,i] = expm(A[:, :, i-1]*(tau[i] - tau[i-1]))*xpts[:, i-1]
   end
 
   # Compute State Trajectory
-  x = Array{Float64}(nx, length(t))
+  x = Array{Float64}(undef,nx, length(t))
   x[:, 1] = x0
   tauind = 1  # Index to keep track of the current mode
 
@@ -205,10 +205,10 @@ end
     tvec, tauIdx = mergeSortFindIndex(tgrid, tau)
 
     # Create matrix of Linearized Dynamics
-    A = Array{Float64}(nx+1, nx+1, N+ngrid - 1)
+    A = Array{Float64}(undef,nx+1, nx+1, N+ngrid - 1)
 
     # Compute Initial States
-    xpts = Array{Float64}(nx+1, N+ngrid)  # Augmented State for Linearization
+    xpts = Array{Float64}(undef,nx+1, N+ngrid)  # Augmented State for Linearization
     xpts[:,1] = [x0; 1]
 
 
@@ -234,7 +234,7 @@ end
 
 
       # Compute State Trajectory
-      x = Array{Float64}(nx+1, length(t))
+      x = Array{Float64}(undef,nx+1, length(t))
       x[:, 1] = [x0; 1]
       tauind = 1  # Index to keep track of the current mode
 
@@ -338,7 +338,7 @@ end
 function simulateinput(m::nlinSTO)
 
   # Define Time
-  t = collect(linspace(m.STOev.t0, m.STOev.tf, 10000))
+  t = collect(range(m.STOev.t0,stop= m.STOev.tf,length= 10000))
 
 
   # u = computenlswinput(m.taucomplete, m.STOev.uvec, t)

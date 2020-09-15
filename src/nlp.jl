@@ -231,8 +231,8 @@ function mergeSortFindIndex(tgrid::Array{Float64, 1}, tau::Array{Float64,1})
 
   ngrid = length(tgrid)
   N = length(tau)
-  tauIdx = Array{Int}(N+2); tauIdx[1] = 1; tauIdx[end]= N + ngrid
-  tgridIdx = Array{Int}(ngrid); tgridIdx[1] = 1; tgridIdx[end]= N + ngrid
+  tauIdx = Array{Int}(undef,N+2); tauIdx[1] = 1; tauIdx[end]= N + ngrid
+  tgridIdx = Array{Int}(undef,ngrid); tgridIdx[1] = 1; tgridIdx[end]= N + ngrid
 
 
   # Create merged and sorted time vector with grid and switching times
