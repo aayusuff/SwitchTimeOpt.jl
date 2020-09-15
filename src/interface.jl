@@ -70,7 +70,7 @@ function stoproblem(
   V = Array{Complex{Float64}}(undef,2*nx, 2*nx, N+1)
   invV = Array{Complex{Float64}}(undef,2*nx, 2*nx, N+1)
   D =  Array{Complex{Float64}}(undef,2*nx, N+1)
-  isDiag = Array{Bool}(N+1)
+  isDiag = Array{Bool}(undef, N+1)
 
   for i = 1:N+1
     D[:, i], V[:, :, i] = eig([-A[:, :, i]'  Q;
@@ -195,7 +195,7 @@ function stoproblem(
 
   # Extend Initial State and Cost Matrix
   x0 = [x0; 1]
-  spz = Array{Float64}(1,1); spz[1,1] = 0.0; spz = sparse(spz)  # Sparse scalar
+  spz = Array{Float64}(undef,1,1); spz[1,1] = 0.0; spz = sparse(spz)  # Sparse scalar
   Q = full(blkdiag(sparse(Q), spz))
   E = full(blkdiag(sparse(E), spz))
 
