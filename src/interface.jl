@@ -35,7 +35,8 @@ function stoproblem(
   end
 
   if isempty(tau0ws)
-    tau0ws = collect(linspace(t0, tf, N+2))
+      tau0ws = collect( range(t0, stop = tf, length =  N+2) ) 
+      
     tau0ws = tau0ws[2:end-1]
   end
 
@@ -43,7 +44,7 @@ function stoproblem(
   delta0ws = tau2delta(tau0ws, t0, tf)
 
   # Create Discretization Grid
-  tgrid = collect(linspace(t0, tf, ngrid))
+    tgrid = collect(range(t0, stop = tf,length =  ngrid))
 
   # Initialize time vectors
   tvec = Array{Float64}(N + ngrid)    # Complete grid
@@ -171,7 +172,7 @@ function stoproblem(
   end
 
   if isempty(tau0ws)
-    tau0ws = collect(linspace(t0, tf, N+2))  # Currently counting tau_0 and tau_{N+1}. They are removed below after xpts initialization.
+    tau0ws = collect(range(t0, stop = tf, length = N+2))  # Currently counting tau_0 and tau_{N+1}. They are removed below after xpts initialization.
     tau0ws = tau0ws[2:end-1]  # Include only switching instants
 
   end
@@ -179,7 +180,7 @@ function stoproblem(
 
 
   # Create Discretization grid
-  tgrid = collect(linspace(t0, tf, ngrid))
+  tgrid = collect(range(t0, stop = tf, length = ngrid))
 
 
   # Initialize time vectors
