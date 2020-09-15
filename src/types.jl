@@ -1,14 +1,17 @@
 # Empty matrix and vector for function evaluation
-const emptyfvec = Array{Float64}(0)
-const emptyfmat = Array{Float64}(0, 0)
 
+# using MathProgBase
+
+const emptyfvec = Array{Float64}(undef, 0)
+const emptyfmat = Array{Float64}(undef, 0, 0)
 
 # Define Abstract NLP Evaluator for STO problem
 abstract type STOev <: MathProgBase.AbstractNLPEvaluator end
 
 
 # Linear Case
-type linSTOev <: STOev
+# type
+mutable struct linSTOev <: STOev
   # Parameters
   x0::Array{Float64,1}                    # Initial State x0
   nx::Int                                 # State dimension
@@ -64,8 +67,11 @@ type linSTOev <: STOev
   nhesseval::Int                           # Number of hessian evaluations
 end
 
+
+
 # Nonlinear Case
-type nlinSTOev <: STOev
+# type
+mutable struct nlinSTOev <: STOev
   # Parameters
   x0::Array{Float64,1}                     # Initial State x0
   nx::Int                                  # State dimension
@@ -126,7 +132,8 @@ end
 # Create switching time optimization (STO) abstract type
 abstract type STO end
 
-type linSTO <: STO  # Linear STO type
+# type
+mutable struct linSTO <: STO  # Linear STO type
   model::MathProgBase.AbstractNonlinearModel  # Nonlinear Program Model
   STOev::linSTOev                             # NLP Evaluator for linear STO
 
@@ -143,7 +150,8 @@ type linSTO <: STO  # Linear STO type
 
 end
 
-type nlinSTO <: STO  # Nonlinear STO type
+# type
+mutable struct nlinSTO <: STO  # Nonlinear STO type
   model::MathProgBase.AbstractNonlinearModel  # Nonlinear Program Model
   STOev::nlinSTOev                            # NLP Evaluator for nonlinear STO
 

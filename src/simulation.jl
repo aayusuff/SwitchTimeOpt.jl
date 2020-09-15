@@ -390,17 +390,33 @@ function computenlswinput(tauopt, uvec, t)
 
 end
 
+# Commented out by AAY
+# # Trapezoidal integration rule
+# function trapz{Tx<:Number, Ty<:Number}(x::Vector{Tx}, y::Vector{Ty})
+#     local n = length(x)
+#     if (length(y) != n)
+#         error("Vectors 'x', 'y' must be of same length")
+#     end
+#     r = zero(zero(Tx) + zero(Ty))
+#     if n == 1; return r; end
+#     for i in 2:n
+#         r += (x[i] - x[i-1]) * (y[i] + y[i-1])
+#     end
+#     return r/2
+# end
 
-# Trapezoidal integration rule
-function trapz{Tx<:Number, Ty<:Number}(x::Vector{Tx}, y::Vector{Ty})
-    local n = length(x)
-    if (length(y) != n)
-        error("Vectors 'x', 'y' must be of same length")
-    end
-    r = zero(zero(Tx) + zero(Ty))
-    if n == 1; return r; end
-    for i in 2:n
-        r += (x[i] - x[i-1]) * (y[i] + y[i-1])
-    end
-    return r/2
+# Trapezoidal integration rule: Added by AAY based on
+# https://stackoverflow.com/questions/58139195/cumulative-integration-options-with-julia
+function trapz(x::T, y::T) where {T <: AbstractVector}
+  # Check matching vector length
+  @assert length(x) == length(y)
+  # Initialize Output
+  out = similar(x)
+  out[1] = 0
+  # Iterate over arrays
+  for i in 2:length(x)
+    out[i] = out[i-1] + 0.5*(x[i] - x[i-1])*(y[i] + y[i-1])
+  end
+  # Return output
+  out
 end
