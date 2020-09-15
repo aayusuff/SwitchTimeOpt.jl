@@ -413,7 +413,7 @@ end
 "Low level function for computing Phi matrices"
 function computePhilw!(d::STOev)
   for i = 1 : d.N + 2
-    d.Phi[:, :, i, i] = eye(d.nx)  # Identity Matrix to Start
+    d.Phi[:, :, i, i] = I(d.nx)  # Identity Matrix to Start
     for l = i:d.N + 1  # Iterate over all successive Phi matrices
       d.Phi[:, :, i, l+1] = d.Phi[:, :, i, l]  # Initialize with previous matrix
       for j=d.tauIdx[l]:d.tauIdx[l+1]-1  # Iterate over all points between switching times

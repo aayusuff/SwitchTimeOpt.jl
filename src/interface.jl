@@ -18,7 +18,8 @@ function stoproblem(
 
   # Adjust variables which have not been initalized
   if isempty(Q)
-    Q = eye(nx)
+      # Q = eye(nx)
+      Q = I(nx)
   end
 
   if isempty(E)
@@ -152,7 +153,8 @@ function stoproblem(
 
   # Adjust variables which have not been initalized
   if isempty(Q)
-    Q = eye(nx)
+      # Q = eye(nx)
+      Q = I(nx)
   end
 
   if isempty(E)
