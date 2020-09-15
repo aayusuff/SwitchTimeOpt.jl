@@ -5,6 +5,7 @@ module SwitchTimeOpt
   using DiffEqBase
   using OrdinaryDiffEq
   using Ipopt
+  using LinearAlgebra
 
 
   export stoproblem,

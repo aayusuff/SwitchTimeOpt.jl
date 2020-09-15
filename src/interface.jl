@@ -155,6 +155,7 @@ function stoproblem(
   if isempty(Q)
       # Q = eye(nx)
       Q = I(nx)
+      
   end
 
   if isempty(E)
