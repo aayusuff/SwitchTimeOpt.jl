@@ -73,7 +73,7 @@ function stoproblem(
   isDiag = Array{Bool}(undef, N+1)
 
   for i = 1:N+1
-    D[:, i], V[:, :, i] = eig([-A[:, :, i]'  Q;
+    D[:, i], V[:, :, i] = eigen([-A[:, :, i]'  Q;
                              zeros(nx, nx) A[:, :, i]])
     if cond(V[:, :, i]) == Inf  # Non diagonalizable matrix
       isDiag[i] = false
