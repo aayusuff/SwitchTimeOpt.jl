@@ -367,11 +367,13 @@ function delta2tau(delta::Array{Float64, 1}, t0::Float64)
   tau = Array{Float64}(undef, length(delta)-1)
 
   # Initialize first tau element
-  tau[1] = t0 + delta[1]
+    # tau[1] = t0 + delta[1]
+    push!(tau, t0 + delta[1])
 
   # Iteratively add all deltas to create switching times vector
-  for i = 2:length(tau)
-    tau[i] = tau[i-1] + delta[i]
+    for i = 2:length(tau)
+        # tau[i] = tau[i-1] + delta[i]
+        push!(tau, tau[i-1] + delta[i])
   end
 
   tfdelta = tau[end] + delta[end]
