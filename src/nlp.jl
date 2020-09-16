@@ -242,13 +242,22 @@ function mergeSortFindIndex(tgrid::Array{Float64, 1}, tau::Array{Float64,1})
 
 
   # # Create index of the tau vector elements inside tvec
-  for i = 1:N
-    tauIdx[i+1] = findfirst(tidxtemp, ngrid + i)
-  end
+  # for i = 1:N
+  #   tauIdx[i+1] = findfirst(tidxtemp, ngrid + i)
+    # end
 
-  # # Create index of the tgrid vector elements inside tvec
+  for i = 1:N
+    tauIdx[i+1] = findfirst(isequal(ngrid + i),tidxtemp)
+  end    
+
+    # # Create index of the tgrid vector elements inside tvec
+    
+  # for i = 1:ngrid
+  #   tgridIdx[i] = findfirst(tidxtemp, i)
+    # end
+    
   for i = 1:ngrid
-    tgridIdx[i] = findfirst(tidxtemp, i)
+    tgridIdx[i] = findfirst(isequal(i),tidxtemp)
   end
 
   return tvec, tauIdx, tgridIdx
