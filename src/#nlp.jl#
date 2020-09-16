@@ -378,7 +378,7 @@ function propagateDynamics!(d::nlinSTOev, x::Array{Float64,1})
     # Linearize Dynamics
     d.A[:,:,i] = linearizeDyn(d.nonlin_dyn, d.nonlin_dyn_deriv, d.xpts[1:end-1,i], d.uvec[:, uIdx])
 
-    # Compute Matrix Exponential
+    ## Compute Matrix Exponential
     # tempMat = expm([-d.A[:, :, i]'  d.Q;
       #                 zeros(d.nx, d.nx)  d.A[:, :, i]]*d.deltacomplete[i])
     tempMat = exp([-d.A[:, :, i]'  d.Q;
