@@ -1,16 +1,17 @@
 using SwitchTimeOpt
 
-# Plotting settings
-using PyPlot, PyCall
-close("all")
-# Import seaborn for nice plots
-@pyimport seaborn as sns
-sns.set_palette("hls", 8)
-sns.set_context("paper", font_scale=1.5)
-sns.set_style("whitegrid")
-# Use Latex Labels in Plots
-plt[:rc]("text", usetex=true)
-plt[:rc]("font", family="serif")
+# # Plotting settings
+# using PyPlot, PyCall
+# close("all")
+# # Import seaborn for nice plots
+# @pyimport seaborn as sns
+# sns.set_palette("hls", 8)
+# sns.set_context("paper", font_scale=1.5)
+# sns.set_style("whitegrid")
+# # Use Latex Labels in Plots
+
+# plt[:rc]("text", usetex=true)
+# plt[:rc]("font", family="serif")
 
 maxiter = 20
 using Ipopt
@@ -28,7 +29,8 @@ tf = 12.0
 nx = 4
 
 # Integer input
-uvec = [repmat([0.0; 1.0], 4, 1); 0.0]'
+uvec = [repeat([0.0; 1.0], 4, 1); 0.0]
+
 
 # Number of switching times
 N = size(uvec,2) - 1
@@ -63,21 +65,22 @@ end
 ### Generate and solve problems with different grid points
 ngrid = [100; 150; 200; 250]
 
+# idx200 = (find(ngrid .== 200))[1]
+idx200 = findall((k)-> k== 200, ngrid)[1]
 
-idx200 = (find(ngrid .== 200))[1]
 
 # Preallocate vectors for results
-objode45 = Array{Float64}(length(ngrid))
-objlin = Array{Float64}(length(ngrid))
-objiterates = Array{Float64}(maxiter+1, length(ngrid))
-cputime = Array{Float64}(length(ngrid))
-nobjeval = Array{Int}(length(ngrid))
-ngradeval = Array{Int}(length(ngrid))
-nhesseval = Array{Int}(length(ngrid))
-tauopt = Array{Float64}(N, length(ngrid))
-xsim = Array{Float64}(4, 10^4, length(ngrid))
-xlinsim = Array{Float64}(4, 10^4, length(ngrid))
-usim = Array{Float64}(1, 10^4, length(ngrid))
+objode45 = Array{Float64}(undef,length(ngrid))
+objlin = Array{Float64}(undef, length(ngrid))
+objiterates = Array{Float64}(undef, maxiter+1, length(ngrid))
+cputime = Array{Float64}(undef, length(ngrid))
+nobjeval = Array{Int}(undef, length(ngrid))
+ngradeval = Array{Int}(undef, length(ngrid))
+nhesseval = Array{Int}(undef, length(ngrid))
+tauopt = Array{Float64}(undef, N, length(ngrid))
+xsim = Array{Float64}(undef, 4, 10^4, length(ngrid))
+xlinsim = Array{Float64}(undef, 4, 10^4, length(ngrid))
+usim = Array{Float64}(undef,1, 10^4, length(ngrid))
 
 # Initialize the problem first
 m = stoproblem(x0, nldyn, nldyn_deriv, uvec)
@@ -142,7 +145,7 @@ end
 
 
 # Generate plots for ngrid = 25
-t = linspace(t0, tf, 10000)
+t = range(t0, stop = tf, length = 10000)
 
 figure()
 subplot(3,1,1)

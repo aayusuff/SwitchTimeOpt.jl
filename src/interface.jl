@@ -209,9 +209,15 @@ function stoproblem(
   # Extend Initial State and Cost Matrix
   x0 = [x0; 1]
   spz = Array{Float64}(undef,1,1); spz[1,1] = 0.0; spz = sparse(spz)  # Sparse scalar
-  Q = full(blkdiag(sparse(Q), spz))
-  E = full(blkdiag(sparse(E), spz))
 
+    # Q = full(blkdiag(sparse(Q), spz))
+    # E = full(blkdiag(sparse(E), spz))
+
+    Q = full(blockdiag(sparse(Q), spz))
+    E = full(blockdiag(sparse(E), spz))    
+    
+
+    
 
   # Define Required Matrices and Switching Instants
   A = Array{Float64}(undef, nx, nx, N+ngrid-1)

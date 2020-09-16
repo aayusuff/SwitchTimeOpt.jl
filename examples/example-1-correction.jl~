@@ -1,0 +1,67 @@
+#= 
+
+https://switchtimeoptjl.readthedocs.io/en/latest/quick_example.html
+
+IndTril = (LinearIndices( tril(ones(N+1, N+1)) ))[findall(!iszero,tril(ones(N+1, N+1)))]
+
+x,y,_ =
+begin
+     my_I = findall(!iszero, tril(ones(N+1, N+1)))
+     (getindex.(my_I, 1), getindex.(my_I, 2), tril(ones(N+1, N+1))[my_I])
+end 
+
+tgrid = [1.0; 3.4; 5.]
+tau = [2.0; 2.4]
+
+  ngrid = length(tgrid)
+  N = length(tau)
+  tauIdx = Array{Int}(undef,N+2); tauIdx[1] = 1; tauIdx[end]= N + ngrid
+  tgridIdx = Array{Int}(undef,ngrid); tgridIdx[1] = 1; tgridIdx[end]= N + ngrid
+
+  # Create merged and sorted time vector with grid and switching times
+  ttemp = vcat(tgrid, tau)  # Concatenate grid and tau vector
+  tidxtemp = sortperm(ttemp)  # Find permutation vector to sort ttemp
+  tvec = ttemp[tidxtemp]    # Create full sorted tvec
+
+
+  # # Create index of the tau vector elements inside tvec
+  for i = 1:N
+    tauIdx[i+1] = findfirst(isequal(ngrid + i),tidxtemp)
+  end
+
+  # # Create index of the tgrid vector elements inside tvec
+  for i = 1:ngrid
+    tgridIdx[i] = findfirst(isequal(i),tidxtemp)
+  end
+
+
+
+=#
+
+using LinearAlgebra
+using SwitchTimeOpt
+using Ipopt
+
+
+# Time Interval
+t0 = 0.0; tf = 1.0
+
+# Initial State
+x0 = [1.0; 1.0]
+
+# Dynamics
+A = Array{Float64}(undef, 2, 2, 2)
+A[:, :, 1] = randn(2, 2)  # A_0 matrix
+A[:, :, 2] = randn(2, 2)  # A_1 matrix
+
+# Create Problem
+m = stoproblem(x0, A, t0=t0, tf=tf)
+
+# Solve Problem
+solve!(m)
+
+# Get optimal Solution
+tauopt = gettau(m)
+
+# Get optimum value
+objval = getobjval(m)
