@@ -213,8 +213,8 @@ function stoproblem(
     # Q = full(blkdiag(sparse(Q), spz))
     # E = full(blkdiag(sparse(E), spz))
 
-    Q = full(blockdiag(sparse(Q), spz))
-    E = full(blockdiag(sparse(E), spz))    
+    Q = Matrix(blockdiag(sparse(Q), spz))
+    E = Matrix(blockdiag(sparse(E), spz))    
     
 
     
