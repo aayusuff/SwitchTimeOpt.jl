@@ -85,12 +85,25 @@ function stoproblem(
 
 
   # Construct Matrix of Indeces for lower triangular Matrix (Hessian)
-  IndTril = find(tril(ones(N+1, N+1)))
-  Itril, Jtril, _ = findnz(tril(ones(N+1, N+1)))
+    # IndTril = find( tril(ones(N+1, N+1)) )
+    IndTril = (LinearIndices(tril(ones(N+1, N+1))))[findall(!iszero,tril(ones(N+1, N+1)))]
+    
+    # Itril, Jtril, _ = findnz(tril(ones(N+1, N+1)))
+
+        Itril, Jtril, _ =
+begin
+     my_I = findall(!iszero, tril(ones(N+1, N+1)))
+     (getindex.(my_I, 1), getindex.(my_I, 2), tril(ones(N+1, N+1))[my_I])
+end 
 
   # Construct Constraints Matrix (Vector)
   Ag = ones(1, N+1)
-  Ig, Jg, Vg = findnz(Ag)
+    # Ig, Jg, Vg = findnz(Ag)
+    Ig, Jg, Vg  =
+        begin
+            my_I = findall(!iszero, Ag )
+            (getindex.(my_I, 1), getindex.(my_I, 2), Ag[my_I])
+        end
   bg = [tf]   # Only one constraints for the sum of the switching intervals
 
 
@@ -224,13 +237,28 @@ function stoproblem(
 
 
   # Construct Matrix of Indeces for lower triangular Matrix (Hessian)
-  IndTril = find(tril(ones(N+1, N+1)))
-  Itril, Jtril, _ = findnz(tril(ones(N+1, N+1)))
+    # IndTril = find(tril(ones(N+1, N+1)))
+    
+     IndTril = (LinearIndices(tril(ones(N+1, N+1))))[findall(!iszero,tril(ones(N+1, N+1)))]
+    # Itril, Jtril, _ = findnz(tril(ones(N+1, N+1)))
+
+    Itril, Jtril, _ =
+begin
+     my_I = findall(!iszero, tril(ones(N+1, N+1)))
+     (getindex.(my_I, 1), getindex.(my_I, 2), tril(ones(N+1, N+1))[my_I])
+end 
 
 
   # Construct Constraints Matrix (Vector)
   Ag = ones(1, N+1)
-  Ig, Jg, Vg = findnz(Ag)
+    # Ig, Jg, Vg = findnz(Ag)
+    
+Ig, Jg, Vg  =
+begin
+     my_I = findall(!iszero, Ag )
+     (getindex.(my_I, 1), getindex.(my_I, 2), Ag[my_I])
+end
+    
   bg = [tf]   # Only one constraints for the sum of the switching intervals
 
   # Initialize objective evaluator

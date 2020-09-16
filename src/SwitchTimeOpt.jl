@@ -6,7 +6,7 @@ module SwitchTimeOpt
   using OrdinaryDiffEq
   using Ipopt
   using LinearAlgebra
-
+  using SparseArrays
 
   export stoproblem,
          setwarmstart!,setx0!,
