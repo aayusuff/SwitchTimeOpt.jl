@@ -33,7 +33,9 @@ uvec = [repeat([0.0; 1.0], 4, 1); 0.0]
 
 
 # Number of switching times
-N = size(uvec,2) - 1
+# N = size(uvec,2) - 1
+N = size(uvec,2)
+
 
 # Cost funcction matrix
 C = [1.0 0.0 -1.0 0.0;
@@ -86,7 +88,7 @@ usim = Array{Float64}(undef,1, 10^4, length(ngrid))
 m = stoproblem(x0, nldyn, nldyn_deriv, uvec)
 
 for i = 1:length(ngrid)  # Iterate over all grid points numbers
-
+    
   m = stoproblem(
     x0,                 # Initial state
     nldyn,              # Nonlinear dynamics
@@ -112,14 +114,17 @@ for i = 1:length(ngrid)  # Iterate over all grid points numbers
   # Simulate system
   # Nonlinear simulation
   xsim[:, :, i], xpts, objode45[i], t = simulate(m, tauopt[:, i])
+
   usim[:, :, i], _ = simulateinput(m, t)
 
-  # Linearized simulation
+  ## Linearized simulation
   xlinsim[:, :, i], _, Jlinsim, _ = simulatelinearized(m, tauopt[:, i], t)
-
-  # Save objective function iterates
+    
+  ## Save objective function iterates
   objiterates[:, i] = m.STOev.obj[2:end]
 
+    # push!(objiterates[:, i], m.STOev.obj[2:end])
+    
 end
 
 
