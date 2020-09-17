@@ -34,10 +34,6 @@ function simulate(m::linSTO, tau::Array{Float64,1}, t::Array{Float64,1})
 end
 
 
-
-
-
-
 # Nonlinear Systems STO
 function simulate(m::nlinSTO)
 
@@ -162,7 +158,7 @@ function simulatelinsto(tau::Array{Float64,1}, x0::Array{Float64, 1}, Q::Array{F
   xpts = Array{Float64}(undef,nx, N+1)
   xpts[:,1] = x0
   for i = 2:N+1
-    xpts[:,i] = expm(A[:, :, i-1]*(tau[i] - tau[i-1]))*xpts[:, i-1]
+    xpts[:,i] = exp(A[:, :, i-1]*(tau[i] - tau[i-1]))*xpts[:, i-1]
   end
 
   # Compute State Trajectory
@@ -179,7 +175,7 @@ function simulatelinsto(tau::Array{Float64,1}, x0::Array{Float64, 1}, Q::Array{F
     end
 
     # Compute State
-    x[:, i] = expm(A[:, :, tauind]*(t[i] - tau[tauind]))*xpts[:, tauind]
+    x[:, i] = exp(A[:, :, tauind]*(t[i] - tau[tauind]))*xpts[:, tauind]
 
   end
 
@@ -228,7 +224,7 @@ end
         A[:,:,i] = linearizeDyn(nonlin_dyn, nonlin_dyn_deriv, xpts[1:end-1,i], uvec[:,uIdx])
 
         # Compute Next Point in Simulation
-        xpts[:,i+1] = expm(A[:, :, i]*(tvec[i+1] - tvec[i]))*xpts[:, i]
+        xpts[:,i+1] = exp(A[:, :, i]*(tvec[i+1] - tvec[i]))*xpts[:, i]
 
       end
 
@@ -249,7 +245,7 @@ end
         end
 
         # Compute State
-        x[:, i] = expm(A[:, :, tauind]*(t[i] - tvec[tauind]))*xpts[:, tauind]
+        x[:, i] = exp(A[:, :, tauind]*(t[i] - tvec[tauind]))*xpts[:, tauind]
 
       end
 

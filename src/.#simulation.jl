@@ -1,1 +1,0 @@
-yusuffaa@lenovoT440p.9228:1599703328

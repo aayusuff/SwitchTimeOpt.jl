@@ -28,7 +28,7 @@ t0 = 0.0
 tf = 10.0
 
 # Integer inputs
-uvec = repmat([1.0; 2.0], 8, 1)'
+uvec = repeat([1.0; 2.0], 8, 1)'
 
 # Number of switches
 N = size(uvec,2) -1
@@ -68,17 +68,17 @@ ngrid = [10; 30; 50; 100]
 
 
 # Preallocate vectors for results
-objode45 = Array{Float64}(length(ngrid))
-objlin = Array{Float64}(length(ngrid))
-objiterates = Array{Float64}(maxiter+1, length(ngrid))
-cputime = Array{Float64}(length(ngrid))
-nobjeval = Array{Int}(length(ngrid))
-ngradeval = Array{Int}(length(ngrid))
-nhesseval = Array{Int}(length(ngrid))
-tauopt = Array{Float64}(N, length(ngrid))
-xsim = Array{Float64}(3, 10^4, length(ngrid))
-xlinsim = Array{Float64}(3, 10^4, length(ngrid))
-usim = Array{Float64}(1, 10^4, length(ngrid))
+objode45 = Array{Float64}(undef, length(ngrid))
+objlin = Array{Float64}(undef,length(ngrid))
+objiterates = Array{Float64}(undef,maxiter+1, length(ngrid))
+cputime = Array{Float64}(undef,length(ngrid))
+nobjeval = Array{Int}(undef,length(ngrid))
+ngradeval = Array{Int}(undef,length(ngrid))
+nhesseval = Array{Int}(undef,length(ngrid))
+tauopt = Array{Float64}(undef,N, length(ngrid))
+xsim = Array{Float64}(undef,3, 10^4, length(ngrid))
+xlinsim = Array{Float64}(undef,3, 10^4, length(ngrid))
+usim = Array{Float64}(undef,1, 10^4, length(ngrid))
 
 # Initialize the problem first
 m = stoproblem(x0, nldyn, nldyn_deriv, uvec)

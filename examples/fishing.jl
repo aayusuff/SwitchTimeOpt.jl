@@ -34,7 +34,8 @@ uvec = [repeat([0.0; 1.0], 4, 1); 0.0]
 
 # Number of switching times
 # N = size(uvec,2) - 1
-N = size(uvec,2)
+
+N = size(uvec,1) - 1
 
 
 # Cost funcction matrix
@@ -105,9 +106,9 @@ for i = 1:length(ngrid)  # Iterate over all grid points numbers
 
   # Obtain values
   tauopt[:, i] = gettau(m)
-  objlin[i] = getobjval(m)
-  cputime[i] = getsoltime(m)
-  nobjeval[i] = getnobjeval(m)
+  objlin[i]    = getobjval(m)
+  cputime[i]   = getsoltime(m)
+  nobjeval[i]  = getnobjeval(m)
   ngradeval[i] = getngradeval(m)
   nhesseval[i] = getnhesseval(m)
 
@@ -123,7 +124,7 @@ for i = 1:length(ngrid)  # Iterate over all grid points numbers
   ## Save objective function iterates
   objiterates[:, i] = m.STOev.obj[2:end]
 
-    # push!(objiterates[:, i], m.STOev.obj[2:end])
+  # push!(objiterates[:, i], m.STOev.obj[2:end])
     
 end
 
